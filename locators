@@ -1,0 +1,48 @@
+
+package locators;
+
+import org.openqa.selenium.By;
+
+public final class LoginLocators {
+
+    public static final By SIGN_IN_BUTTON =
+            By.cssSelector("button[aria-label='Sign in to your account']");
+
+//============================================================================================
+public static final By MOBILE_TAB =
+        By.cssSelector("button.reg-tab");
+
+    public static final By COUNTRY_BUTTON =
+            By.id("reg-entry-country");
+
+    public static final By MOBILE_NUMBER =
+            By.id("reg-entry-mobile");
+
+    public static final By ACCEPT_BUTTON =
+            By.className("acceptbtn");
+
+    public static final By CONTINUE_BUTTON =
+            By.className("reg-submit");
+    //=============================================================================================================
+
+        public static final By WHATSAPP_OTP_TITLE =
+                By.xpath("//span[contains(@class,'reg-method-title') and normalize-space(.)='Login with WhatsApp OTP']");
+
+        public static final By CONTINUE_BUTTON1 =
+                By.className("reg-submit");
+
+        public static final By MASKED_MOBILE_NUMBER =
+                By.xpath("//p[contains(normalize-space(.), '+91')]");
+
+        public static final By OTP_DIGITS =
+                By.className("reg-digit");
+
+
+
+
+//==================================================================================================
+
+
+    public LoginLocators() {
+    }}
+
