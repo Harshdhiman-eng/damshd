@@ -1,0 +1,92 @@
+
+package driver;
+
+import enums.BrowserType;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import utils.ConfigReader;
+
+import java.time.Duration;
+import java.util.Locale;
+
+public final class DriverManager {
+
+    public static final ThreadLocal<WebDriver> DRIVER =
+            new ThreadLocal<>();
+
+    public DriverManager() {
+    }
+
+    public static void createDriver() {
+        if (DRIVER.get() != null) {
+            return;
+        }
+
+        String browserName =
+                ConfigReader.getProperty("browser")
+                        .toUpperCase(Locale.ROOT);
+
+        BrowserType browser = BrowserType.valueOf(browserName);
+        WebDriver driver;
+
+        switch (browser) {
+            case CHROME:
+                ChromeOptions options = new ChromeOptions();
+
+                if (Boolean.parseBoolean(
+                        ConfigReader.getProperty("headless"))) {
+                    options.addArguments("--headless=new");
+                }
+
+                options.addArguments("--window-size=1920,1080");
+                driver = new ChromeDriver(options);
+                break;
+
+            case FIREFOX:
+                driver = new FirefoxDriver();
+                break;
+
+            case EDGE:
+                driver = new EdgeDriver();
+                break;
+
+            default:
+                throw new IllegalArgumentException(
+                        "Unsupported browser: " + browser);
+        }
+
+        driver.manage().timeouts()
+                .implicitlyWait(Duration.ZERO);
+
+        driver.manage().timeouts()
+                .pageLoadTimeout(Duration.ofSeconds(60));
+
+        DRIVER.set(driver);
+    }
+
+    public static WebDriver getDriver() {
+        WebDriver driver = DRIVER.get();
+
+        if (driver == null) {
+            throw new IllegalStateException(
+                    "WebDriver is not initialized. Call createDriver() first.");
+        }
+
+        return driver;
+    }
+
+ //   public static void quitDriver() {
+      //  WebDriver driver = DRIVER.get();
+//
+    //    try {
+         //   if (driver != null) {
+      //          driver.quit();//
+       //     }
+       // } finally {
+         //   DRIVER.remove();
+        }
+  //  }
+
