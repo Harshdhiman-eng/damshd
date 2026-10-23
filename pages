@@ -1,0 +1,163 @@
+
+package pages;
+
+import base.BasePage;
+import locators.LoginLocators;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.util.List;
+
+public class LoginPage extends BasePage {
+
+    public final WebDriverWait wait;
+
+    public LoginPage(WebDriver driver) {
+        super(driver);
+        this.wait = new WebDriverWait(
+                driver, Duration.ofSeconds(20)
+        );
+    }
+
+    public void clickSignIn() {
+        wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        LoginLocators.SIGN_IN_BUTTON
+                )
+        ).click();
+    }
+
+    public void clickMobileTab() {
+        wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        LoginLocators.MOBILE_TAB
+                )
+        ).click();
+    }
+
+    public void clickCountryButton() {
+        wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        LoginLocators.COUNTRY_BUTTON
+                )
+        ).click();
+    }
+
+    public boolean isMobileNumberFieldDisplayed() {
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        LoginLocators.MOBILE_NUMBER
+                )
+        ).isDisplayed();
+    }
+
+    public void enterMobileNumber(String mobileNumber) {
+
+        if (mobileNumber == null ||
+                !mobileNumber.matches("\\d{10}")) {
+            throw new IllegalArgumentException(
+                    "Mobile number must contain exactly 10 digits"
+            );
+        }
+
+        WebElement mobileInput = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        LoginLocators.MOBILE_NUMBER
+                )
+        );
+
+        mobileInput.clear();
+        mobileInput.sendKeys(mobileNumber);
+    }
+
+    public String getEnteredMobileNumber() {
+        WebElement mobileInput = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        LoginLocators.MOBILE_NUMBER
+                )
+        );
+
+        return mobileInput.getAttribute("value");
+    }
+
+    public void clickAccept() {
+        wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        LoginLocators.ACCEPT_BUTTON
+                )
+        ).click();
+    }
+
+    public void clickContinue() {
+        wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        LoginLocators.CONTINUE_BUTTON
+                )
+        ).click();
+    }
+//============================================================================================
+
+
+
+    public void clickWhatsAppOTP() {
+
+        WebElement otpOption = wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        LoginLocators.WHATSAPP_OTP_TITLE
+                )
+        );
+
+        otpOption.click();
+
+        System.out.println("WhatsApp OTP option clicked.");
+    }
+
+    public void clickWhatsAppContinue() {
+
+        WebElement continueButton = wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        LoginLocators.CONTINUE_BUTTON1
+                )
+        );
+
+        continueButton.click();
+
+        System.out.println("Continue button clicked.");
+    }
+
+    public boolean isMaskedMobileNumberDisplayed() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        LoginLocators.MASKED_MOBILE_NUMBER
+                )
+        ).isDisplayed();
+    }
+
+    public void enterOTP(String otp) {
+
+        if (otp == null || !otp.matches("\\d{4}")) {
+            throw new IllegalArgumentException(
+                    "OTP must contain exactly 4 digits."
+            );
+        }
+
+        List<WebElement> otpFields = wait.until(
+                ExpectedConditions.numberOfElementsToBe(
+                        LoginLocators.OTP_DIGITS, 4
+                )
+        );
+
+        for (int i = 0; i < 4; i++) {
+            otpFields.get(i).sendKeys(
+                    String.valueOf(otp.charAt(i))
+            );
+        }
+
+        System.out.println("OTP entered into four fields.");
+    }
+
+}
