@@ -1,0 +1,43 @@
+
+package utils;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class WaitUtils {
+
+    public final WebDriverWait wait;
+
+    public WaitUtils(WebDriver driver) {
+        if (driver == null) {
+            throw new IllegalArgumentException(
+                    "WebDriver cannot be null");
+        }
+
+        this.wait = new WebDriverWait(
+                driver,
+                java.time.Duration.ofSeconds(
+                        ConfigReader.getTimeout()));
+    }
+
+    public WebElement waitForClickable(By locator) {
+        return wait.until(
+                ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    public WebElement waitForVisibility(By locator) {
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    public boolean waitForUrlContains(String text) {
+        return wait.until(
+                ExpectedConditions.urlContains(text));
+    }
+
+
+}
