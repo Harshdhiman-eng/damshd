@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="DAMS Alpha Suite" parallel="false">
+
+    <listeners>
+        <listener class-name="listeners.TestListener"/>
+    </listeners>
+
+    <test name="DAMS Smoke Tests">
+        <classes>
+            <class name="tests.smoke.HomeSmokeTest"/>
+            <class name="tests.smoke.LoginSmokeTest"/>
+        </classes>
+    </test>
+
+</suite>
