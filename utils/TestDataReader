@@ -1,0 +1,58 @@
+
+package utils;
+
+import java.io.InputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+public final class TestDataReader {
+
+    public static final Properties PROPERTIES = new Properties();
+
+    static {
+        try (InputStream input =
+                     TestDataReader.class.getClassLoader()
+                             .getResourceAsStream("testdata.properties")) {
+
+            if (input == null) {
+                throw new IllegalStateException(
+                        "testdata.properties file not found in src/test/resources"
+                );
+            }
+
+            PROPERTIES.load(input);
+
+        } catch (IOException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
+
+    public TestDataReader() {
+    }
+
+    public static String getMobileNumber() {
+        String mobile = PROPERTIES.getProperty("mobile.number");
+
+        if (mobile == null || !mobile.matches("\\d{10}")) {
+            throw new IllegalArgumentException(
+                    "mobile.number must contain exactly 10 digits"
+            );
+        }
+
+        return mobile;
+    }
+
+
+
+    public static String getLoginPin() {
+        String pin = PROPERTIES.getProperty("login.pin");
+
+        if (pin == null || pin.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "login.pin is missing in testdata.properties"
+            );
+        }
+
+        return pin.trim();
+    }
+}
